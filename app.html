@@ -7,30 +7,19 @@
 </head>
 <body>
   <script>
-    async function lockAllGroups() {
-      alert("✅ App started (v2)");
+    async function debugGroups() {
+      alert("🚀 App started, checking groups...");
 
-      // Получаем все группы на доске
       const groups = await miro.board.get({ type: 'group' });
+      alert(`📦 Found groups: ${groups.length}`);
 
-      if (!groups.length) {
-        await miro.board.notifications.showInfo("ℹ️ No groups found");
-        return;
+      if (groups.length > 0) {
+        let ids = groups.map(g => g.id).join("\n");
+        alert("IDs:\n" + ids);
       }
-
-      // Лочим каждую группу
-      for (const group of groups) {
-        await miro.board.update({
-          id: group.id,
-          locked: true
-        });
-      }
-
-      await miro.board.notifications.showInfo(`🔒 Locked groups: ${groups.length}`);
     }
 
-    // В v2 не нужен onReady — сразу вызываем
-    lockAllGroups();
+    debugGroups();
   </script>
 </body>
 </html>
