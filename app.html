@@ -12,7 +12,7 @@
 
   try {
     console.log("LockAllGroups started");
-    await miro.board.notifications.showInfo("🚀 LockAllGroups started");
+    await miro.board.notifications.showInfo("LockAllGroups::started");
 
     const groups = await miro.board.get({ type: 'group' });
     console.log("Found groups:", groups.length);
@@ -26,11 +26,11 @@
     }
 
     console.log("LockAllGroups done");
-    await miro.board.notifications.showInfo("✅ LockAllGroups done");
+    await miro.board.notifications.showInfo("LockAllGroups::done");
   } catch (err) {
     console.error("LockAllGroups error:", err);
     if (miro.board?.notifications?.showError) {
-      await miro.board.notifications.showError("❌ LockAllGroups error: " + (err?.message || err));
+      await miro.board.notifications.showError("LockAllGroups::error " + (err?.message || err));
     }
   }
 })();
