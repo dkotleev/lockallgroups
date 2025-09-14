@@ -2,31 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>LockAllGroups</title>
+  <title>SDK Test</title>
   <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
 </head>
 <body>
   <script>
-    async function lockAllGroups() {
-      alert("✅ LockAllGroups app started!");
-
-      const groups = await miro.board.groups.get();
-      alert(`Найдено групп: ${groups.length}`);
-
-      let totalLocked = 0;
-      for (const group of groups) {
-        const items = await group.getItems();
-        for (const item of items) {
-          await item.lock();
-          totalLocked++;
-        }
-      }
-
-      alert(`🔒 Locked items in ${groups.length} groups (${totalLocked} objects)`);
-    }
-
     miro.onReady(() => {
-      lockAllGroups();
+      alert("✅ SDK initialized and app is running!");
+      console.log("Miro SDK initialized:", miro);
     });
   </script>
 </body>
