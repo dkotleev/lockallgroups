@@ -7,19 +7,34 @@
 </head>
 <body>
   <script>
-    async function debugGroups() {
-      alert("🚀 App started, checking groups...");
-
+    async function lockAllGroups() {
+      // Находим все группы
       const groups = await miro.board.get({ type: 'group' });
-      alert(`📦 Found groups: ${groups.length}`);
+      let totalLocked = 0;
 
+      for (const group of groups) {
+        // Получаем все элементы внутри группы
+        const items = await group.getItems();
+        for (const item of items) {
+          try {
+            await item.lock();
+            totalLocked++;
+          } catch (e) {
+            console.error("Не удалось залочить объект", item, e);
+          }
+        }
+      }
+
+      // Уведомление в интерфейсе Miro
       if (groups.length > 0) {
-        let ids = groups.map(g => g.id).join("\n");
-        alert("IDs:\n" + ids);
+        await miro.board.notifications.showInfo(`🔒 Locked ${totalLocked} objects in ${groups.length} groups`);
+      } else {
+        await miro.board.notifications.showInfo("ℹ️ No groups found to lock");
       }
     }
 
-    debugGroups();
+    // Запуск сразу при открытии приложения
+    lockAllGroups();
   </script>
 </body>
 </html>
