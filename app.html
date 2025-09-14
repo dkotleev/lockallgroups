@@ -10,18 +10,26 @@
     async function lockGroups() {
       try {
         const groups = await miro.board.get({ type: 'group' });
-        console.log("📦 Найдены группы:", groups);
+        console.log("📦 Found groups:", groups);
 
         if (groups.length === 0) {
-          await miro.board.notifications.showInfo("Групп не найдено");
+          await miro.board.notifications.showInfo("Группы не найдены");
           return;
         }
 
-        // Лочим только группы
-        const updates = groups.map(g => ({ id: g.id, locked: true }));
-        await miro.board.widgets.update(updates);
+        let totalLocked = 0;
 
-        await miro.board.notifications.showInfo(`🔒 Заблокировано групп: ${groups.length}`);
+        for (const group of groups) {
+          const items = await group.getItems();
+          if (items.length > 0) {
+            await miro.board.update(
+              items.map(it => ({ id: it.id, locked: true }))
+            );
+            totalLocked += items.length;
+          }
+        }
+
+        await miro.board.notifications.showInfo(`🔒 Заблокировано объектов: ${totalLocked} (в ${groups.length} группах)`);
       } catch (err) {
         console.error("❌ Ошибка при блокировке групп:", err);
         await miro.board.notifications.showError("Ошибка при блокировке групп (см. консоль)");
