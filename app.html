@@ -10,7 +10,9 @@
     async function lockAllGroups() {
       alert("✅ App started!");
 
+      // Получаем все группы
       const groups = await miro.board.get({ type: 'group' });
+
       for (const group of groups) {
         await miro.board.update({
           id: group.id,
@@ -18,13 +20,12 @@
         });
       }
 
-      await miro.board.ui.openLeftSidebar('🔒 Все группы залочены');
+      // Для проверки можно вызвать простое уведомление Miro UI
+      await miro.board.notifications.showInfo(`🔒 Locked groups: ${groups.length}`);
     }
 
-    // v2 SDK: всё начинается с miro.board.onReady()
-    miro.board.onReady(() => {
-      lockAllGroups();
-    });
+    // В v2 onReady не нужен, можно вызвать сразу
+    lockAllGroups();
   </script>
 </body>
 </html>
