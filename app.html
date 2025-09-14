@@ -12,24 +12,23 @@
         // Получаем все группы
         const groups = await miro.board.get({ type: 'group' });
 
-        if (!groups.length) {
-          await miro.board.notifications.showInfo('Нет групп для блокировки');
+        if (groups.length === 0) {
+          await miro.board.notifications.showInfo("📦 Групп нет на доске");
           return;
         }
 
-        // Устанавливаем locked = true
+        // Обновляем свойство locked для всех групп
         await miro.board.set(
           groups.map(g => ({ id: g.id, locked: true }))
         );
 
         await miro.board.notifications.showInfo(`🔒 Заблокировано групп: ${groups.length}`);
       } catch (e) {
-        console.error('Ошибка при блокировке групп:', e);
-        await miro.board.notifications.showError('❌ Ошибка при блокировке групп (см. консоль)');
+        console.error("Ошибка при блокировке групп:", e);
+        alert("Ошибка при блокировке групп: " + e.message);
       }
     }
 
-    // Запуск сразу
     lockAllGroups();
   </script>
 </body>
