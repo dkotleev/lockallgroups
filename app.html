@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>LockAllGroups</title>
+  <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
+</head>
+<body>
+  <script>
+    async function lockAllGroups() {
+      const groups = await miro.board.groups.get();
+      for (const group of groups) {
+        await miro.board.groups.update({ id: group.id, locked: true });
+      }
+      miro.showNotification(`🔒 Locked groups: ${groups.length}`);
+    }
+
+    miro.onReady(() => {
+      lockAllGroups();
+    });
+  </script>
+</body>
+</html>
