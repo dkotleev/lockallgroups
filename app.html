@@ -9,7 +9,7 @@
   <script>
     async function lockAllGroups() {
       try {
-        // Получаем все группы на доске
+        // Получаем все группы
         const groups = await miro.board.get({ type: 'group' });
 
         if (!groups.length) {
@@ -17,8 +17,8 @@
           return;
         }
 
-        // Лочим каждую группу
-        await miro.board.update(
+        // Устанавливаем locked = true
+        await miro.board.set(
           groups.map(g => ({ id: g.id, locked: true }))
         );
 
@@ -29,7 +29,7 @@
       }
     }
 
-    // Запуск сразу после загрузки приложения
+    // Запуск сразу
     lockAllGroups();
   </script>
 </body>
