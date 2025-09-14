@@ -8,11 +8,13 @@
 <body>
   <script>
     async function lockAllGroups() {
-      const groups = await miro.board.groups.get();
-      let totalLocked = 0;
+      alert("✅ LockAllGroups app started!");
 
+      const groups = await miro.board.groups.get();
+      alert(`Найдено групп: ${groups.length}`);
+
+      let totalLocked = 0;
       for (const group of groups) {
-        // Получаем объекты, входящие в группу
         const items = await group.getItems();
         for (const item of items) {
           await item.lock();
@@ -20,7 +22,7 @@
         }
       }
 
-      miro.showNotification(`🔒 Locked items in ${groups.length} groups (${totalLocked} objects)`);
+      alert(`🔒 Locked items in ${groups.length} groups (${totalLocked} objects)`);
     }
 
     miro.onReady(() => {
